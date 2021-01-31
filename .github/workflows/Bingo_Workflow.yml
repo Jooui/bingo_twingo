@@ -9,6 +9,7 @@ jobs:
   syntax_check_job:
     name: syntax_check_job
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -24,6 +25,7 @@ jobs:
   test_execution_job:
     name: test_execution_job
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -36,6 +38,7 @@ jobs:
     name: build_statics_job
     runs-on: ubuntu-latest
     needs: [syntax_check_job, test_execution_job]
+    continue-on-error: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -53,6 +56,7 @@ jobs:
     name: deploy_job
     runs-on: ubuntu-latest
     needs: build_statics_job
+    continue-on-error: true
     steps:
     - name: artifact download build
       uses: actions/download-artifact@v2
@@ -65,13 +69,14 @@ jobs:
         project: .
         token: ${{secrets.SURGE_TOKEN }}
         login: ${{secrets.SURGE_LOGIN }}
+
   notification_job:
     name: notification_job
     runs-on: ubuntu-latest
+    needs: [syntax_check_job, test_execution_job, build_statics_job, deploy_job]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: Send mail to own email
         uses: ./.github/actions/email_notification
         with:

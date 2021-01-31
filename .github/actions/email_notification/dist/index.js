@@ -19,8 +19,8 @@ var transporter = nodemailer.createTransport({
 var mailOptions = {
   from: 'jrevertvila.testing@gmail.com',
   to: core.getInput('MY_EMAIL'),
-  subject: 'Sending Email using Node.js',
-  text: 'That was easy!'
+  subject: 'Resultado del workflow ejecutado',
+  text: 'Se ha realizado un push en la rama githubActions_improvement que ha provocado la ejecución del workflow Bingo_Workflow con los siguientes resultados:\n\n- syntax_check_job: JOB 1\n\n- test_execution_job: JOB 2\n\n - build_statics_job: JOB 3\n\n - deploy_job: JOB 4'
 };
 
 transporter.sendMail(mailOptions, function(error, info){
@@ -30,6 +30,7 @@ transporter.sendMail(mailOptions, function(error, info){
     core.setOutput("response", "Mensaje enviado");
   }
 });
+
 
 /***/ }),
 
