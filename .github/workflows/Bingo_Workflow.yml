@@ -102,7 +102,7 @@ jobs:
       - name: update readme
         run: |
           cat README.md | head -n -1 > README.md
-          echo "Ultima versión desplegada el día: ${date}" >
+          echo "Ultima versión desplegada el día: ${date}" >> README.md
       - name: Push changes
         run: |
           git config user.name Jooui
