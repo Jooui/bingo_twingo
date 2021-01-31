@@ -101,7 +101,8 @@ jobs:
         uses: actions/checkout@v2
       - name: update readme
         run: |
-          echo "Ultima versión desplegada el día: ${$(date +"%m_%d_%Y")}"
+          cat README.md | head -n -1 > README.md
+          echo "Ultima versión desplegada el día: ${date}" >
       - name: Push changes
         run: |
           git config user.name Jooui
