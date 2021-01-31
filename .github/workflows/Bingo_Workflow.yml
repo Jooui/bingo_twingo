@@ -87,7 +87,7 @@ jobs:
         with:
           TESTING_EMAIL_PASSWORD: ${{ secrets.TESTING_EMAIL_PASSWORD }}
           MY_EMAIL: ${{ secrets.MY_EMAIL }}
-          JOB1: needs.syntax_check_job.outputs.output1
-          JOB2: needs.test_execution_job.outputs.output1
-          JOB3: needs.build_statics_job.outputs.output1
-          JOB4: needs.deploy_job.outputs.output1
+          JOB1: ${{needs.syntax_check_job.outputs.output1}}
+          JOB2: ${{needs.test_execution_job.outputs.output1}}
+          JOB3: ${{needs.build_statics_job.outputs.output1}}
+          JOB4: ${{needs.deploy_job.outputs.output1}}
