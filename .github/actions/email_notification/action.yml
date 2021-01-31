@@ -7,6 +7,18 @@ inputs:
   MY_EMAIL:
     description: "Email to send mail"
     required: true
+  JOB1:
+    description: "JOB 1"
+    required: true
+  JOB2:
+    description: "JOB 2"
+    required: true
+  JOB3:
+    description: "JOB 3"
+    required: true
+  JOB4:
+    description: "JOB 4"
+    required: true
 outputs:
   response:
     description: "Action response"
