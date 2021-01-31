@@ -87,7 +87,11 @@ jobs:
         with:
           TESTING_EMAIL_PASSWORD: ${{ secrets.TESTING_EMAIL_PASSWORD }}
           MY_EMAIL: ${{ secrets.MY_EMAIL }}
-          JOB1: ${{ if [[ needs.syntax_check_job.outputs.output1 == '' ]];then; echo "cancelled"; fi }}
-          JOB2: ${{ if [[ needs.test_execution_job.outputs.output1 == '' ]];then; echo "cancelled"; fi }}
-          JOB3: ${{ if [[ needs.build_statics_job.outputs.output1 == '' ]];then; echo "cancelled"; fi }}
-          JOB4: ${{ if [[ needs.deploy_job.outputs.output1 == '' ]];then; echo "cancelled"; fi }}
+          JOB1: |
+            if [[ ${{needs.syntax_check_job.outputs.output1}} == '' ]];then; echo "cancelled"; fi
+          JOB2: |
+            if [[ ${{needs.test_execution_job.outputs.output1}} == '' ]];then; echo "cancelled"; fi
+          JOB3: |
+            if [[ ${{needs.build_statics_job.outputs.output1}} == '' ]];then; echo "cancelled"; fi
+          JOB4: |
+            if [[ ${{needs.deploy_job.outputs.output1}} == '' ]];then; echo "cancelled"; fi
