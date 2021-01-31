@@ -20,10 +20,14 @@ jobs:
           LINTER_RULES_PATH: /
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.js
           VALIDATE_JAVASCRIPT_ES: true
+    outputs:
+      output1: ${{ job.status }}
 
   test_execution_job:
     name: test_execution_job
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ job.status }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -36,6 +40,8 @@ jobs:
     name: build_statics_job
     runs-on: ubuntu-latest
     needs: [syntax_check_job, test_execution_job]
+    outputs:
+      output1: ${{ job.status }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -53,6 +59,8 @@ jobs:
     name: deploy_job
     runs-on: ubuntu-latest
     needs: build_statics_job
+    outputs:
+      output1: ${{ job.status }}
     steps:
     - name: artifact download build
       uses: actions/download-artifact@v2
@@ -79,7 +87,7 @@ jobs:
         with:
           TESTING_EMAIL_PASSWORD: ${{ secrets.TESTING_EMAIL_PASSWORD }}
           MY_EMAIL: ${{ secrets.MY_EMAIL }}
-          JOB1: ${{needs.syntax_check_job.status}}
-          JOB2: ${{needs.test_execution_job.status}}
-          JOB3: ${{needs.build_statics_job.status}}
-          JOB4: ${{needs.deploy_job.status}}
+          JOB1: ${{ if [[ needs.syntax_check_job.outputs.output1 == '' ]];then; echo "cancelled"; fi }}
+          JOB2: ${{ if [[ needs.test_execution_job.outputs.output1 == '' ]];then; echo "cancelled"; fi }}
+          JOB3: ${{ if [[ needs.build_statics_job.outputs.output1 == '' ]];then; echo "cancelled"; fi }}
+          JOB4: ${{ if [[ needs.deploy_job.outputs.output1 == '' ]];then; echo "cancelled"; fi }}
