@@ -1,0 +1,15 @@
+name: "Send mail with nodemailer"
+description: "Action to send email"
+inputs:
+  TESTING_EMAIL_PASSWORD:
+    description: "Password of testing email"
+    required: true
+  MY_EMAIL:
+    description: "Email to send mail"
+    required: true
+outputs:
+  response:
+    description: "Action response"
+runs:
+  using: "node12"
+  main: "dist/index.js"

@@ -1,0 +1,16 @@
+{
+  "name": "email_notification",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joel Revert",
+  "license": "ISC",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "nodemailer": "^6.4.17"
+  }
+}
