@@ -20,7 +20,7 @@ var mailOptions = {
   from: 'jrevertvila.testing@gmail.com',
   to: core.getInput('MY_EMAIL'),
   subject: 'Resultado del workflow ejecutado',
-  text: `Se ha realizado un push en la rama githubActions_improvement que ha provocado la ejecución del workflow Bingo_Workflow con los siguientes resultados:\n\n- syntax_check_job: ${core.getInput('JOB1')}\n\n- test_execution_job: ${core.getInput('JOB2')}\n\n - build_statics_job: ${core.getInput('JOB3')}\n\n - deploy_job: ${core.getInput('JOB4')}`
+  text: `Se ha realizado un push en la rama githubActions_improvement que ha provocado la ejecución del workflow Bingo_Workflow con los siguientes resultados:\n\n- syntax_check_job: ${setMsg(core.getInput('JOB1'))}\n\n- test_execution_job: ${setMsg(core.getInput('JOB2'))}\n\n - build_statics_job: ${setMsg(core.getInput('JOB3'))}\n\n - deploy_job: ${setMsg(core.getInput('JOB4'))}`
 };
 
 transporter.sendMail(mailOptions, function(error, info){
@@ -31,6 +31,13 @@ transporter.sendMail(mailOptions, function(error, info){
   }
 });
 
+function setMsg(msg){
+  if (msg == ''){
+    return "Skipped"
+  } else {
+    return msg
+  }
+}
 
 /***/ }),
 
