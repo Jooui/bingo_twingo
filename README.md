@@ -57,4 +57,5 @@ $ npm start
 
 
 
-Ultima versión desplegada el día: Sun Jan 31 17:08:54 UTC 2021
+
+Ultima versión desplegada el día: Tue Feb  2 23:55:51 UTC 2021
