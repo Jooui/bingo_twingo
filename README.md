@@ -1,60 +1,48 @@
-# BINGO TWINGO
-Bingo twingo is a web application development project in offline and online mode (using websockets with socket.io) that consists of a traditional online bingo game to play without an internet connection or online with other remote players. Its fast and funny and doesn't require any kind of sign in, sing up, fuck up, cookie hell... and all the annoying things usually around modern web apps.
+# Práctica Github Actions
 
-Has been developed as single page application with RAW ES6 javascript. The only third party library used in frontend has been socket_io_client.
+![Actions Image](gh_pages_media/github-action-01.png)
 
-In backend (server side) we use nodejs + express + socket.io
+## Qué es Github Actions?
 
-DEMO HERE ->
+Github actions es una nueva forma que nos ofrece Github de automatizar la ejecución de código en nuestro repositorio. Nos permiten automatizar tareas dentro del ciclo de vida del desarrollo de software. Pueden basarse en JavaScript o Docker, pero JavaScript suele presentar menos problemas. Las Actions son ejecutadas por workflows, y pueden realziar cualquier tarea que deseemos, por ejemplo, nos puede ejecutar todos los tests y avisarnos en caso que alguno, realizar deploy en servidores externos, etc. Una acción basada en JS, consta de un fichero .YML, un package.json y el codigo necesario de JavaScript.
 
-# Start developing
-`npm intall`   (only once)
-`npm buildDev`
-`npm start`
-`Open browser http://localhost:8080`
- 
+![Actions Structure Image](gh_pages_media/folders_action.png)
 
-# Deploying in production 
-`npm buildProd`
+Github dispone de su propia MarketPlace para publicar Actions realizadas por otros programadores: https://github.com/marketplace?type=actions
+Para ejecutarla, necesitaremos un Workflow para indicar que se ejecute al realizar una determinada acción en nuestro repositorio, por ejemplo, un push.
 
-Now in dist folder we have all javascripts, css,assets ... optimized to deploy.
-Go to dist/ folder and serve your web app:
-`node server.js`
-`Open browser in http://YOUR_IP:8080`
+## Qué es Github Workflows?
 
+Un workflow o un flujo de trabajo en github, son ficheros que ejecutan cuando realicemos la acción indicada en el mismo fichero, por ejemplo, al realizar un push a una rama específica. Estos ficheros constan de diferents Jobs, cada job puede ejecutar un Action diferente, ya sea propia o no, o simplemente, ejecutar un job con diferentes steps sin necesidad de llamar a un Action.
 
-# Project technology background 
+![Actions Structure Image](gh_pages_media/workflow_diagram.png)
 
-Expack is the bare-bones Express and Webpack boilerplate with ES6+ babel transpilation, ESLint linting, Hot Module Reloading, and Jest test framework enabled.
+## Qué es NCC/Vercel?
 
-Expack has two build modes: Development and Production.
-
-When you run `npm run buildDev`, Javascript, HTML, and CSS files are unminified and not uglified, meaning that you can easily inspect them in Chrome Dev Tools. Hot Module Reloading is enabled via `webpack-dev-middleware` and `webpack-hot-middleware`. 
-
-When you run `npm run buildProd`, Javascript, HTML, and CSS files are all minified and uglified, and images are encoded as Base64 directly into your CSS file, which results in less calls to the server for image files.
-
-## Google App Engine Flex Deployment
-
-Expack can be deployed directly to Google App Engine Flex with the command `npm run deploy`. **IMPORTANT:** Currently `app.yaml` is configured to use minimal resources to save on cost, which is great for development but terrible for production. Please review and update `app.yaml` to suit your own needs.
-
-## Get starting 🚀
-To be able to put the web application into operation you need to have these tools installed.
-
-### For development environments…
-
-We install all the packages that the application needs for its deployment.
-``` sh
-$ npm install
+Vercel es un compilador para Node.JS, el cual nos implementará en un mismo fichero todo el código junto a todas las dependencias del mismo, para poder desplegar-lo facilmente en diferentes plataformas. Utilizamos Vercel para compilar nuestra Action con el comando:
 ```
-When all the packages have finally been installed we will create the execution files with [weback][webpack]:
-``` sh
-$ npm run buildDev
-```
-And finally to run the project through port 8080:
-``` sh
-$ npm start
+$ ncc build input.js -o dist
 ```
 
+## Qué es Surge.sh?
+
+Surge es una herramienta que nos permite publicar nuestra aplicación web estática en Internet de forma GRATUITA con un simple comando. 
+
+```
+$ surge
+```
+
+Nos pedirá un email y contraseña, y un nombre para el dominio, el cual será nombre.surge.sh, y en cuestión de segundos tendremos nuestra página web desplegada en internet con un solo comando.
+
+## Qué es Nodemailer?
+
+Nodemailer es un libreria para aplicaciones Node.JS que permite enviar facilmente correos electronicos mediante JavaScript. Utilizando esta libreria, hemos creado un Action para notificar a los usuarios por correo electronico que se ha realziado un commit en la rama indicada.
+
+## Qué es Eslint?
+
+![Actions Structure Image](gh_pages_media/Eslint.png)
+
+Eslint es un linter, es decir, un correcor de código, que examina el codigo de JavaScript para determinar que cumpla ciertos estándares y estilos, favoreciendo de esta forma la escritura de código de calidad. Podemos configurarlo a nuestro gusto mediante un fichero de configuración, de esta manera, todo el equipo de trabajo puede mantener la misma estructura de código.
 
 
-Ultima versión desplegada el día: Sun Jan 31 17:08:54 UTC 2021
+
