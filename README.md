@@ -385,4 +385,122 @@ Finalmente, realizamos un push para añadir esta última tarea y comprobar si nu
 
 
 
-Ya hemos creado completamente nuestro workflow con las actions indicadas. Ahora siempre que realicemos un push a la rama indicada en nuestro workflow, se ejecutaran todas las tareas y nos avisará del resultado por correo electrónico.
+Ya hemos creado completamente nuestro workflow con las actions indicadas. Ahora siempre que realicemos un push a la rama indicada en nuestro workflow, se ejecutaran todas las tareas y nos avisará del resultado por correo electrónico. Así queda finalmente nuestro fichero Bingo_Workflow.yml:
+
+## Workflow Completo
+
+```
+name: Bingo_Workflow
+
+on:
+  push:
+    branches:
+      - githubActions_improvement
+
+jobs:
+  syntax_check_job:
+    name: syntax_check_job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Lint Code Base
+        uses: github/super-linter@v3
+        env:
+          DEFAULT_BRANCH: githubActions_improvement
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LINTER_RULES_PATH: /
+          JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.js
+          VALIDATE_JAVASCRIPT_ES: true
+    outputs:
+      output1: ${{ job.status }}
+
+  test_execution_job:
+    name: test_execution_job
+    runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ job.status }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Ejecutar tests con jest
+        run: |
+          npm i
+          npm run test
+
+  build_statics_job:
+    name: build_statics_job
+    runs-on: ubuntu-latest
+    needs: [syntax_check_job, test_execution_job]
+    outputs:
+      output1: ${{ job.status }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: build app
+        run: |
+          npm i
+          npm run buildDev
+      - name: artifact upload build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build_app
+          path: ./dist
+
+  deploy_job:
+    name: deploy_job
+    runs-on: ubuntu-latest
+    needs: build_statics_job
+    outputs:
+      output1: ${{ job.status }}
+    steps:
+    - name: artifact download build
+      uses: actions/download-artifact@v2
+      with: 
+        name: build_app
+    - name: deploy app on surge
+      uses: dswistowski/surge-sh-action@v1
+      with:
+        domain: jrevertvila.surge.sh
+        project: .
+        token: ${{secrets.SURGE_TOKEN }}
+        login: ${{secrets.SURGE_LOGIN }}
+
+  notification_job:
+    name: notification_job
+    runs-on: ubuntu-latest
+    needs: [syntax_check_job, test_execution_job, build_statics_job, deploy_job]
+    if: ${{ always() }} #Se ejecutará siempre aunque los otros fallen
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Send mail to own email
+        uses: ./.github/actions/email_notification
+        with:
+          TESTING_EMAIL_PASSWORD: ${{ secrets.TESTING_EMAIL_PASSWORD }}
+          MY_EMAIL: ${{ secrets.MY_EMAIL }}
+          JOB1: ${{needs.syntax_check_job.outputs.output1}}
+          JOB2: ${{needs.test_execution_job.outputs.output1}}
+          JOB3: ${{needs.build_statics_job.outputs.output1}}
+          JOB4: ${{needs.deploy_job.outputs.output1}}
+  
+  update_readme_job:
+    name: update_readme_job
+    runs-on: ubuntu-latest
+    needs: deploy_job
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: update readme
+        run: |
+          sed -i '$d' README.md
+          echo -e "\nUltima versión desplegada el día: `date`" >> README.md
+      - name: Push changes
+        run: |
+          git config user.name Jooui
+          git config user.email jrevertvila@gmail.com
+          git add .
+          git commit -m "Readme modificado"
+          git push origin githubActions_improvement
+
+```
