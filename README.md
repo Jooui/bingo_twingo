@@ -8,7 +8,7 @@
 
 ![Actions Structure Image](gh_pages_media/folders_action.png)
 
-Github dispone de su propia **MarketPlace** para publicar Actions realizadas por otros programadores: https://github.com/marketplace?type=actions
+Github dispone de su propia **[MarketPlace](https://github.com/marketplace?type=actions)** para publicar Actions realizadas por otros programadores.
 Para ejecutarla, necesitaremos un Workflow para indicar que se ejecute al realizar una determinada acción en nuestro repositorio, por ejemplo, un push.
 
 ## Qué es Github Workflows?
